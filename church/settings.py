@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'directory.apps.DirectoryConfig',
-    'basicLoginLogout.apps.BasicloginlogoutConfig'
+    'basicLoginLogout.apps.BasicloginlogoutConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
