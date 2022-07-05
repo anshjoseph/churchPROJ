@@ -20,7 +20,7 @@ class Ward(models.Model):
 class Family(models.Model):
     wardid = models.ForeignKey(Ward,on_delete=models.CASCADE)
     familyname = models.CharField(max_length=300)
-    menbercount = models.IntegerField(default=0)
+    membercount = models.IntegerField(default=0)
     # for printing in dashboard
     def __str__(self) -> str:
         return f"{self.id}-{self.familyname}"
