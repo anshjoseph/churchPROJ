@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("getpeople/",DV.getpeople,name="getpeople"),
     path("makefamily/",DV.makefamily,name="makefamily"),
-    path("makepeople/",DV.AddPeople,name="makepeople")
+    path("makepeople/",DV.makepeople,name="makepeople")
 ]
