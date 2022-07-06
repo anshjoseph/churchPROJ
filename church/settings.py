@@ -35,6 +35,8 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = []
 
+# ALLOWING POST AND PUT REQUEST
+APPEND_SLASH = False
 
 # Application definition
 
@@ -59,6 +61,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK= {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    )
+}
 
 ROOT_URLCONF = 'church.urls'
 
