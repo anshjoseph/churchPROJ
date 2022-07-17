@@ -49,3 +49,13 @@ def needSessionUuid(**kargs):
         return 0
 
 
+class APIkey(models.Model):
+    key = models.CharField(max_length=64,default="genrate",unique=True)
+    def __str__(self) -> str:
+        return self.key
+@receiver(post_save,sender=APIkey)
+def genkey(**kargs):
+    if kargs.get('created'):
+        instance = kargs.get('instance')
+        instance.key = str(uuid4())
+        instance.save()
