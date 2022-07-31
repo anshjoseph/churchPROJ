@@ -1,42 +1,59 @@
+from enum import unique
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
+
 # for signaling in future
-from django.dispatch import receiver
-from django.db.models.signals import post_save,post_delete
 # for uniqe id
 from uuid import uuid4
 
 # WARD
 class Ward(models.Model):
-    wardname = models.CharField(max_length=1024)
-    wardhead = models.CharField(max_length=100)
+    ward_name = models.CharField(max_length=1024)
+    ward_head = models.TextField()
     # for printing in dashboard
     def __str__(self) -> str:
-        return f"{self.id}-{self.wardname}"
+        return f"{self.id}-{self.ward_name}"
+
     # for printing in terminal
     def __repr__(self) -> str:
-        return f"{self.wardname}"
+        return f"{self.ward_name}"
+
 
 # FAMILY
-class Family(models.Model):
-    wardid = models.ForeignKey(Ward,on_delete=models.CASCADE)
-    familyname = models.CharField(max_length=300)
-    membercount = models.IntegerField(default=0)
+class Family(AbstractBaseUser):
+    ward = models.ForeignKey(Ward, on_delete=models.CASCADE, related_name="family_ward")
+    family_name = models.CharField(max_length=255)
+    family_head_name = models.CharField(max_length=255)
+    member_count = models.IntegerField(default=1)
+
+    USERNAME_FIELD = "family_name"
+
+    class Meta:
+        unique_together = ["family_head_name", "ward"]
+
     # for printing in dashboard
     def __str__(self) -> str:
-        return f"{self.id}-{self.familyname}"
+        return f"{self.id}-{self.family_name}"
+
     # for printing in terminal
     def __repr__(self) -> str:
-        return f"{self.familyname}"
+        return f"{self.family_name}"
+
 
 # PEOPLE
 class People(models.Model):
-    familyid = models.ForeignKey(Family,on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    age = models.IntegerField()
-    # feilds were add according to need
-    # for printing in dashboard
+    family = models.ForeignKey(
+        Family, on_delete=models.CASCADE, related_name="people_family"
+    )
+    first_name = models.CharField(max_length=255)
+    middle_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255, blank=True)
+    age = models.IntegerField(default=1)
+    date_of_birth = models.DateField(null=False)
+
     def __str__(self) -> str:
-        return f"{self.id}-{self.name}"
+        return f"{self.first_name}-{self.last_name}"
+
     # for printing in terminal
     def __repr__(self) -> str:
-        return f"{self.name}"
+        return f"{self.last_name}"
