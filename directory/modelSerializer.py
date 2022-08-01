@@ -20,4 +20,4 @@ class SerialFamily(ModelSerializer):
 class SerialPeople(ModelSerializer):
     class Meta:
         model = People
-        fields = ["id","name","age"]
+        fields = ["id","familyid","name","age"]

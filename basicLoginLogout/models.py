@@ -41,7 +41,7 @@ class Session(models.Model):
 # receiver for making new uuid
 @receiver(post_save,sender=Session)
 def needSessionUuid(**kargs):
-    print(kargs)
+    # print(kargs)
     if kargs.get('created'):
         instance = kargs.get('instance')
         instance.sessionid = str(uuid4())

@@ -21,6 +21,8 @@ class Family(models.Model):
     wardid = models.ForeignKey(Ward,on_delete=models.CASCADE)
     familyname = models.CharField(max_length=300)
     membercount = models.IntegerField(default=0)
+    phoneno = models.CharField(max_length=11)
+    address = models.CharField(max_length=256,default="not found")
     # for printing in dashboard
     def __str__(self) -> str:
         return f"{self.id}-{self.familyname}"
@@ -28,11 +30,16 @@ class Family(models.Model):
     def __repr__(self) -> str:
         return f"{self.familyname}"
 
+
 # PEOPLE
 class People(models.Model):
     familyid = models.ForeignKey(Family,on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     age = models.IntegerField()
+    dob = models.DateField()
+    phoneno = models.CharField(max_length=10)
+    email = models.CharField(max_length=256,default="not found")
+    jobStatus = models.CharField(max_length=3,default="no")
     # feilds were add according to need
     # for printing in dashboard
     def __str__(self) -> str:

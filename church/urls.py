@@ -23,5 +23,5 @@ urlpatterns = [
     path("getpeople/",DV.getpeople,name="getpeople"),
     path("makefamily/",DV.makefamily,name="makefamily"),
     path("makepeople/",DV.makepeople,name="makepeople"),
-    path("test/",DV.test)
+    path("login/",DV.loginfamily,name="login"),
 ]
