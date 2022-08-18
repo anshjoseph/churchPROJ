@@ -3,9 +3,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Family
+from .models import Family, Ward
 from django.utils import timezone
-from .serializer import FamilySerializer
+from .serializer import FamilySerializer, WardSerializer
+from django_filters import rest_framework as filters
+from rest_framework import filters as rest_filters
 
 
 def get_tokens_for_family(user):
@@ -124,3 +126,43 @@ class FamilySigninEndpoint(APIView):
         except Exception as e:
             print(e)
             return Response({"error": "Something went wrong please try again later"})
+
+
+class WardListEndpoint(APIView):
+    def get(self, request):
+        try:
+            wards = Ward.objects.all()
+            serializer = WardSerializer(wards, many=True)
+            return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(
+                {"error": "Something went wrong please try again later"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class ChurchDirectoryEndpoint(APIView):
+
+    filterset_fields = ("ward_id",)
+    search_fields = (
+        "^family_name",
+        "^family_head_name",
+    )
+
+    filter_backends = (
+        filters.DjangoFilterBackend,
+        rest_filters.SearchFilter,
+    )
+
+    def get(self, request):
+        try:
+            family = Family.objects.all()
+            serializer = FamilySerializer(family, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(
+                {"error": "Something went wrong please try again later"},
+                status=status.HTTP_200_OK,
+            )
