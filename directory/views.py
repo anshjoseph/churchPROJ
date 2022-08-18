@@ -1,11 +1,19 @@
-from os import stat
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Family
 from django.utils import timezone
 from .serializer import FamilySerializer
+
+
+def get_tokens_for_family(user):
+    refresh = RefreshToken.for_user(user)
+    return (
+        str(refresh.access_token),
+        str(refresh),
+    )
 
 
 class FamilySignupEndpoint(APIView):
@@ -48,7 +56,15 @@ class FamilySignupEndpoint(APIView):
 
             serializer = FamilySerializer(family)
 
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            access_token, refresh_token = get_tokens_for_family(family)
+            return Response(
+                {
+                    "data": serializer.data,
+                    "access_token": access_token,
+                    "refresh_token": refresh_token,
+                },
+                status=status.HTTP_200_OK,
+            )
 
         except Exception as e:
             print(e)
@@ -92,9 +108,18 @@ class FamilySigninEndpoint(APIView):
 
             family.save()
 
+            access_token, refresh_token = get_tokens_for_family(family)
+
             serializer = FamilySerializer(family)
 
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                {
+                    "data": serializer.data,
+                    "access_token": access_token,
+                    "refresh_token": refresh_token,
+                },
+                status=status.HTTP_200_OK,
+            )
 
         except Exception as e:
             print(e)
