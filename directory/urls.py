@@ -1,4 +1,11 @@
-from .views import FamilySigninEndpoint, FamilySignupEndpoint
+from .views import (
+    ChurchDirectoryEndpoint,
+    FamilyMembersEndpoint,
+    FamilySigninEndpoint,
+    FamilySignupEndpoint,
+    WardListEndpoint,
+    FamilyUpdateEndpoint,
+)
 from django.urls import path
 
 
@@ -10,5 +17,25 @@ urlpatterns = [
     path(
         "sign-up/",
         FamilySignupEndpoint.as_view(),
+    ),
+    path(
+        "wards/",
+        WardListEndpoint.as_view(),
+    ),
+    path(
+        "families/",
+        ChurchDirectoryEndpoint.as_view(),
+    ),
+    path(
+        "family/<int:pk>/",
+        FamilyMembersEndpoint.as_view(),
+    ),
+    path(
+        "family/update/",
+        FamilyUpdateEndpoint.as_view(),
+    ),
+    path(
+        "family/member/update/",
+        FamilyUpdateEndpoint.as_view(),
     ),
 ]
