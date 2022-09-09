@@ -128,6 +128,26 @@ class FamilySigninEndpoint(APIView):
             return Response({"error": "Something went wrong please try again later"})
 
 
+class FamilyMembersCreateEndpoint(APIView):
+    def post(self, request):
+        try:
+
+            serializer = PeopleSerializer(data=request.data)
+
+            if serializer.is_valid():
+
+                serializer.save()
+                return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+            return Response({"error": serializer.errors})
+        except Exception as e:
+            print(e)
+            return Response(
+                {"error": "Something went wrong please try again later"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
 class FamilyUpdateEndpoint(APIView):
     def put(self, request):
 
