@@ -97,7 +97,28 @@ class People(models.Model):
     middle_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, blank=True)
     age = models.IntegerField(default=1)
-    date_of_birth = models.DateField(null=False)
+    martial_status = models.CharField(
+        choices=(
+            ("SINGLE", "SINGLE"),
+            ("MARRIED", "MARRIED"),
+        ),
+        default="SINGLE",
+        max_length=10,
+    )
+    blood_group = models.CharField(
+        max_length=3,
+        choices=(
+            ("A+", "A+"),
+            ("A-", "A-"),
+            ("B+", "B+"),
+            ("B-", "B-"),
+            ("O+", "O+"),
+            ("O-", "O-"),
+            ("AB+", "AB+"),
+            ("AB-", "AB-"),
+        ),
+        default="B+",
+    )
 
     def __str__(self) -> str:
         return f"{self.first_name}-{self.last_name}"
